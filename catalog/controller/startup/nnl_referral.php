@@ -39,14 +39,14 @@ class NnlReferral extends \Opencart\System\Engine\Controller {
         $current_version = $this->model_setting_setting->getValue('nnl_db_version');
 
         // Only proceed if the version in the database is less than the version in the code.
-        if (version_compare($current_version, self::NNL_DB_VERSION, '< ')) {
+        if (version_compare($current_version, self::NNL_DB_VERSION, '<')) {
             $this->log->write('NNL: Database update required. Current: ' . ($current_version ?: 'None') . ', Target: ' . self::NNL_DB_VERSION);
 
             try {
-                if (version_compare($current_version, '1.0', '< ')) {
+                if (version_compare($current_version, '1.0', '<')) {
                     $this->updateToV1();
                 }
-                if (version_compare($current_version, '1.1', '< ')) {
+                if (version_compare($current_version, '1.1', '<')) {
                     $this->updateToV1_1();
                 }
 
