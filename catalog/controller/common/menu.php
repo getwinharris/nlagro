@@ -1,23 +1,28 @@
 <?php
 namespace Opencart\Catalog\Controller\Common;
-
+/**
+ * Class Menu
+ *
+ * Can be called from $this->load->controller('common/menu');
+ *
+ * @package Opencart\Catalog\Controller\Common
+ */
 class Menu extends \Opencart\System\Engine\Controller {
+	/**
+	 * Index
+	 *
+	 * @return string
+	 */
 	public function index(): string {
 		$this->load->language('common/menu');
-
-		// NNL Products Link
-		$data['categories'][] = [
-			'name'     => 'NNL Products',
-			'children' => [],
-			'column'   => 1,
-			'href'     => $this->url->link('product/nnl_products')
-		];
 
 		// Category
 		$this->load->model('catalog/category');
 
 		// Product
 		$this->load->model('catalog/product');
+
+		$data['categories'] = [];
 
 		$categories = $this->model_catalog_category->getCategories(0);
 

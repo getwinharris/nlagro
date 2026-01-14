@@ -77,6 +77,7 @@ Clear OpenCart cache:
 
 ✅ **Referral System**
 - Agent tracking via ?agent=ID
+- 90-day cookie persistence
 - Commission calculation
 
 ## Troubleshooting
