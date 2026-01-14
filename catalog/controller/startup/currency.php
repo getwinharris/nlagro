@@ -1,51 +1,23 @@
 <?php
-namespace Opencart\Catalog\Controller\Startup;
-/**
- * Class Currency
- *
- * @package Opencart\Catalog\Controller\Startup
- */
-class Currency extends \Opencart\System\Engine\Controller {
-	/**
-	 * Index
-	 *
-	 * @return void
-	 */
-	public function index(): void {
-		$code = '';
+namespace Opencart\System\Engine;
+class Startup extends \Opencart\System\Engine\Controller {
+    public function index() {
+        // Set the default currency to INR if not already set
+        if (!isset($this->session->data['currency'])) {
+            $this->session->data['currency'] = 'INR';
+        }
 
-		// Currency
-		$this->load->model('localisation/currency');
+        // Get the user's IP address
+        $ip = $this->request->server['REMOTE_ADDR'];
 
-		$currencies = $this->model_localisation_currency->getCurrencies();
+        // Load the currency helper
+        $this->load->helper('currency');
 
-		if (isset($this->session->data['currency'])) {
-			$code = $this->session->data['currency'];
-		}
+        // Get IP information and determine the currency
+        $ip_info = \Opencart\System\Helper\Currency::getIpInfo($ip);
+        $currency = \Opencart\System\Helper\Currency::getCurrency($ip_info);
 
-		if (isset($this->request->cookie['currency']) && !array_key_exists($code, $currencies)) {
-			$code = $this->request->cookie['currency'];
-		}
-
-		if (!array_key_exists($code, $currencies)) {
-			$code = $this->config->get('config_currency');
-		}
-
-		if (!isset($this->session->data['currency']) || $this->session->data['currency'] != $code) {
-			$this->session->data['currency'] = $code;
-		}
-
-		// Set a new currency cookie if the code does not match the current one
-		if (!isset($this->request->cookie['currency']) || $this->request->cookie['currency'] != $code) {
-			$option = [
-				'expires'  => time() + 60 * 60 * 24 * 30,
-				'path'     => '/',
-				'SameSite' => 'Lax'
-			];
-
-			setcookie('currency', $code, $option);
-		}
-
-		$this->registry->set('currency', new \Opencart\System\Library\Cart\Currency($this->registry));
-	}
+        // Set the currency in the session
+        $this->session->data['currency'] = $currency;
+    }
 }

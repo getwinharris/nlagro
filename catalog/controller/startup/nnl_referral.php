@@ -1,6 +1,65 @@
 <?php
-namespace Opencart\Catalog\Controller\Startup;\n\nclass NnlReferral extends \Opencart\System\Engine\Controller {\n    private const NNL_DB_VERSION = '1.3';\n\n    public function index(): void {\n        $this->runDatabaseUpdates();\n        if (isset($this->request->get['agent'])) {\n            $this->setAgentCookie((int)$this->request->get['agent']);\n        }\n        if (isset($this->request->get['ref'])) {\n            $this->setAgentCookie((int)$this->request->get['ref']);\n        }\n    }\n\n    private function runDatabaseUpdates(): void {\n        $this->load->model('setting/setting');\n        $current_version = $this->model_setting_setting->getValue('nnl_db_version');\n\n        if (version_compare($current_version, self::NNL_DB_VERSION, '<')) {\n            $this->log->write('NNL: Database update required. Current: ' . ($current_version ?: 'None') . ', Target: ' . self::NNL_DB_VERSION);\n            try {\n                if (version_compare($current_version, '1.0', '<')) {\n                    $this->updateToV1();\n                }\n                if (version_compare($current_version, '1.1', '<')) {\n                    $this->updateToV1_1();\n                }\n                if (version_compare($current_version, '1.2', '<')) {\n                    $this->updateToV1_2();\n                }\n                if (version_compare($current_version, '1.3', '<')) {\n                    $this->updateToV1_3();\n                }\n\n                $this->db->query("DELETE FROM `" . DB_PREFIX . "setting` WHERE `code` = 'config' AND `key` = 'nnl_db_version'");\n                $this->db->query("INSERT INTO `" . DB_PREFIX . "setting` SET `store_id` = 0, `code` = 'config', `key` = 'nnl_db_version', `value` = '" . $this->db->escape(self::NNL_DB_VERSION) . "', `serialized` = 0");\n                $this->log->write('NNL: Database update to version ' . self::NNL_DB_VERSION . ' completed successfully.');\n            } catch (\\Exception $e) {\n                $this->log->write('NNL: FATAL DATABASE UPDATE FAILED! Error: ' . $e->getMessage());\n            }\n        }\n    }\n\n    private function updateToV1(): void {\n        // ... (existing V1.0 code) ...\n    }\n\n    private function updateToV1_1(): void {\n        // ... (existing V1.1 code) ...\n    }\n\n    private function updateToV1_2(): void {\n        // ... (existing V1.2 code) ...\n    }\n\n    private function updateToV1_3(): void {\n        $this->log->write('NNL: Applying data seeding for v1.3...');\n\n        // --- Seed Investment Product ---\n        $this->seedInvestmentProduct();\n
-        $this->log->write('NNL: Data seeding for v1.3 complete.');\n    }\n
-    private function seedInvestmentProduct(): void {\n        $this->seedProduct(\n            'NNL Sprout-Growth Bond',\n            'Invest in a 6-month bond focused on high-yield organic sprouts and spinach. This plan offers a 100% ROI, with monthly profit shares and a full capital refund at the end of the term. By leveraging rapid harvest cycles and high export margins, NNL provides a secure and profitable investment in sustainable agriculture.',\n            'Investment Bonds',\n            10000.00\n        );\n    }\n
-    // ... (other existing helper functions) ...\n
-}\n
+namespace Opencart\Catalog\Controller\Startup;
+
+class NnlReferral extends \Opencart\System\Engine\Controller {
+    private const NNL_DB_VERSION = '1.3';
+
+    public function index(): void {
+        $this->runDatabaseUpdates();
+        if (isset($this->request->get['agent'])) {
+            $this->setAgentCookie((int)$this->request->get['agent']);
+        }
+        if (isset($this->request->get['ref'])) {
+            $this->setAgentCookie((int)$this->request->get['ref']);
+        }
+    }
+
+    private function runDatabaseUpdates(): void {
+        $this->load->model('setting/setting');
+        $current_version = $this->model_setting_setting->getValue('nnl_db_version');
+
+        if (version_compare($current_version, self::NNL_DB_VERSION, '<')) {
+            $this->log->write('NNL: Database update required. Current: ' . ($current_version ?: 'None') . ', Target: ' . self::NNL_DB_VERSION);
+            try {
+                if (version_compare($current_version, '1.0', '<')) {
+                    $this->updateToV1();
+                }
+                if (version_compare($current_version, '1.1', '<')) {
+                    $this->updateToV1_1();
+                }
+                if (version_compare($current_version, '1.2', '<')) {
+                    $this->updateToV1_2();
+                }
+                if (version_compare($current_version, '1.3', '<')) {
+                    $this->updateToV1_3();
+                }
+
+                $this->db->query("DELETE FROM `" . DB_PREFIX . "setting` WHERE `code` = 'config' AND `key` = 'nnl_db_version'");
+                $this->db->query("INSERT INTO `" . DB_PREFIX . "setting` SET `store_id` = 0, `code` = 'config', `key` = 'nnl_db_version', `value` = '" . $this->db->escape(self::NNL_DB_VERSION) . "', `serialized` = 0");
+                $this->log->write('NNL: Database update to version ' . self::NNL_DB_VERSION . ' completed successfully.');
+            } catch (\Exception $e) {
+                $this->log->write('NNL: FATAL DATABASE UPDATE FAILED! Error: ' . $e->getMessage());
+            }
+        }
+    }
+
+    private function updateToV1(): void {
+        // ... (existing V1.0 code) ...
+    }
+
+    private function updateToV1_1(): void {
+        // ... (existing V1.1 code) ...
+    }
+
+    private function updateToV1_2(): void {
+        // ... (existing V1.2 code) ...
+    }
+
+    private function updateToV1_3(): void {
+        $this->log->write('NNL: Applying database schema updates for v1.3...');
+        $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "investment_plan` (`investment_plan_id` INT(11) NOT NULL AUTO_INCREMENT, `name` VARCHAR(255) NOT NULL, `price` DECIMAL(15, 2) NOT NULL, PRIMARY KEY (`investment_plan_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+        $this->log->write('NNL: Schema updates for v1.3 complete.');
+    }
+
+    // ... (other existing helper functions) ...
+}

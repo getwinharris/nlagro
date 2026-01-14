@@ -1,1 +1,57 @@
-<?php\nnamespace Opencart\\Catalog\\Controller\\Information;\\n\\nclass Investment extends \\Opencart\\System\\Engine\\Controller {\\n    public function index(): void {\\n        $this->load->language(\'information/investment\');\\n\\n        $this->load->model(\'catalog/product\');\\n\\n        $this->document->setTitle(\$this->language->get(\\\'heading_title\\\'));\\n\\n        $data[\\\'breadcrumbs\\\'] = [];\\n\\n        $data[\\\'breadcrumbs\\\'][] = [\\n            \\\'text\\\' => \\$this->language->get(\\\'text_home\\\'),\\n            \\\'href\\\' => \\$this->url->link(\\\'common/home\\\')\\n        ];\\n\\n        $data[\\\'breadcrumbs\\\'][] = [\\n            \\\'text\\\' => \\$this->language->get(\\\'heading_title\\\'),\\n            \\\'href\\\' => \\$this->url->link(\\\'information/investment\\\')\\n        ];\\n\n        $data[\\\'heading_title\\\'] = \\$this->language->get(\\\'heading_title\\\');\\n\n        // Get the investment product by name\\n        $investment_product = \\$this->model_catalog_product->getProductByName(\'NNL Sprout-Growth Bond\');\\n\n        if (\\$investment_product) {\\n            $data[\\\'investment_product_url\\\'] = \\$this->url->link(\\\'product/product\\\', \\\'product_id=\\\' . \\$investment_product[\\\'product_id\\\']);\\n        } else {\\n            $data[\\\'investment_product_url\\\'] = \\$this->url->link(\\\'common/home\\\'); // Fallback\\n        }\\n\n        \\$data[\\\'column_left\\\'] = \\$this->load->controller(\\\'common/column_left\\\');\\n        \\$data[\\\'column_right\\\'] = \\$this->load->controller(\\\'common/column_right\\\');\\n        \\$data[\\\'content_top\\\'] = \\$this->load->controller(\\\'common/content_top\\\');\\n        \\$data[\\\'content_bottom\\\'] = \\$this->load->controller(\\\'common/content_bottom\\\');\\n        \\$data[\\\'footer\\\'] = \\$this->load->controller(\\\'common/footer\\\');\\n        \\$data[\\\'header\\\'] = \\$this->load->controller(\\\'common/header\\\');\\n\n        \\$this->response->setOutput(\\$this->load->view(\\\'information/investment\\\', \\$data));\\n    }\\n}\\n
+<?php
+namespace Opencart\Catalog\Controller\Information;
+class Investment extends \Opencart\System\Engine\Controller {
+	public function index(): void {
+		$this->load->language('information/investment');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$data['breadcrumbs'] = [];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/home')
+		];
+
+		$data['breadcrumbs'][] = [
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('information/investment')
+		];
+
+		$this->load->model('catalog/product');
+
+		$data['investment_products'] = [];
+
+        $investment_names = [
+            'NNL Sprout-Growth Bond - Seed',
+            'NNL Sprout-Growth Bond - Sapling',
+            'NNL Sprout-Growth Bond - Plant',
+            'NNL Sprout-Growth Bond - Tree'
+        ];
+
+        foreach ($investment_names as $name) {
+            $product_info = $this->model_catalog_product->getProductByName($name);
+
+            if ($product_info) {
+                $data['investment_products'][] = [
+                    'name'  => $product_info['name'],
+                    'price' => $this->currency->format($product_info['price'], $this->session->data['currency']),
+                    'total_return' => $this->currency->format($product_info['price'] * 2, $this->session->data['currency']),
+                    'href'  => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
+                ];
+            }
+        }
+
+		$data['continue'] = $this->url->link('common/home');
+
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['column_right'] = $this->load->controller('common/column_right');
+		$data['content_top'] = $this->load->controller('common/content_top');
+		$data['content_bottom'] = $this->load->controller('common/content_bottom');
+		$data['footer'] = $this->load->controller('common/footer');
+		$data['header'] = $this->load->controller('common/header');
+
+		$this->response->setOutput($this->load->view('information/investment', $data));
+	}
+}
+ 

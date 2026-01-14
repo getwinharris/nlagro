@@ -6,107 +6,61 @@
         <h1 class="text-4xl md:text-5xl font-bold text-nnl-green mb-4">Global Venture Investment</h1>
         <h2 class="text-2xl md:text-3xl font-semibold text-nnl-gold">The NNL Sprout-Growth Bond</h2>
         <p class="text-lg text-gray-700 max-w-3xl mx-auto mt-4">
-            An opportunity for global investors to participate in India's high-frequency organic farming revolution. Your capital directly funds rapid-yield crops to meet global wholesale demand.
+            An opportunity for global investors to participate in India’s high-frequency organic farming revolution. Your capital directly funds rapid-yield crops to meet global wholesale demand.
         </p>
     </div>
 
-    <!-- Investment Plan Details -->
-    <div class="bg-white rounded-lg shadow-xl p-8 md:p-12 border border-nnl-green/20">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            
-            <!-- Left Side: Infographics -->
-            <div>
-                <div class="bg-nnl-parchment p-6 rounded-lg mb-6">
-                    <h3 class="text-xl font-bold text-nnl-green mb-2">The ₹10,000 Sprout Plan</h3>
-                    <p class="text-4xl font-extrabold text-nnl-green">₹10,000 <span class="text-lg font-medium text-gray-600">/ per unit</span></p>
-                    <p class="text-sm text-gray-600 mt-1">(Equivalent in USD, CAD, AED, etc.)</p>
+    <!-- Investment Tiers -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {% for product in investment_products %}
+            <div class="bg-white rounded-lg shadow-xl p-6 border border-nnl-green/20 flex flex-col">
+                <h3 class="text-xl font-bold text-nnl-green mb-2">{{ product.name }}</h3>
+                <p class="text-4xl font-extrabold text-nnl-green">{{ product.price }}</p>
+                
+                <div class="my-4 space-y-2">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-clock text-nnl-gold w-6"></i>
+                        <span class="ml-2 text-gray-800">Duration: 6 Months</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-leaf text-nnl-gold w-6"></i>
+                        <span class="ml-2 text-gray-800">Asset: Organic Sprouts & Spinach</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-line text-nnl-gold w-6"></i>
+                        <span class="ml-2 text-gray-800">Total Return: {{ product.total_return }}</span>
+                    </div>
                 </div>
                 
-                <div class="space-y-4">
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-clock text-nnl-gold text-2xl w-8"></i>
-                        <span class="ml-4 text-lg text-gray-800"><span class="font-bold">Duration:</span> 6 Months</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-leaf text-nnl-gold text-2xl w-8"></i>
-                        <span class="ml-4 text-lg text-gray-800"><span class="font-bold">Asset:</span> High-velocity organic crops (Sprouts & Spinach)</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-chart-line text-nnl-gold text-2xl w-8"></i>
-                        <span class="ml-4 text-lg text-gray-800"><span class="font-bold">Total Return:</span> ₹20,000 (100% ROI)</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Side: Payout Structure -->
-            <div>
-                <h3 class="text-2xl font-bold text-nnl-green mb-4">Your 6-Month Payout Structure</h3>
-                <div class="flow-root">
-                    <ul class="-mb-8">
-                        <li>
-                            <div class="relative pb-8">
-                                <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
-                                <div class="relative flex space-x-3">
-                                    <div>
-                                        <span class="h-8 w-8 rounded-full bg-nnl-green flex items-center justify-center ring-8 ring-white">
-                                            <i class="fa-solid fa-cash-register text-white"></i>
-                                        </span>
-                                    </div>
-                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                                        <div>
-                                            <p class="text-md text-gray-500">Months 1 - 5</p>
-                                            <p class="font-medium text-gray-900">Monthly Profit Share</p>
-                                        </div>
-                                        <div class="text-right text-lg font-bold text-nnl-green">
-                                            ₹2,000
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="relative pb-8">
-                                <div class="relative flex space-x-3">
-                                    <div>
-                                        <span class="h-8 w-8 rounded-full bg-nnl-gold flex items-center justify-center ring-8 ring-white">
-                                            <i class="fa-solid fa-wallet text-white"></i>
-                                        </span>
-                                    </div>
-                                    <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                                        <div>
-                                            <p class="text-md text-gray-500">Month 6</p>
-                                            <p class="font-medium text-gray-900">Full Capital Refund</p>
-                                        </div>
-                                        <div class="text-right text-lg font-bold text-nnl-green">
-                                            ₹10,000
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="mt-6 border-t pt-6 text-center">
-                     <a href="{{ investment_product_url }}" class="inline-block bg-nnl-gold text-white font-bold text-lg px-12 py-4 rounded-lg hover:bg-opacity-90 transition shadow-lg">
+                <div class="mt-auto">
+                    <a href="{{ product.href }}" class="block w-full text-center bg-nnl-gold text-white font-bold text-lg px-6 py-3 rounded-lg hover:bg-opacity-90 transition shadow-lg">
                         Invest Now
                     </a>
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
 
     <!-- Referral Program -->
     <div class="mt-16 bg-nnl-green text-white rounded-lg p-8">
         <h3 class="text-2xl font-bold text-center mb-4">Refer & Earn: The 10+2 Model</h3>
-        <p class="text-center max-w-2xl mx-auto mb-6">For every successful referral into the Sprout-Growth Bond, you earn a <span class="font-bold text-nnl-gold">₹2,000 commission.</span></p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
-            <div class="bg-nnl-green/50 p-6 rounded-lg">
-                <p class="text-3xl font-bold text-nnl-gold">₹1,000</p>
-                <p class="mt-2">Upfront commission upon successful KYC & investment.</p>
+        <p class="text-center max-w-2xl mx-auto mb-6">Earn commissions by referring others to the Sprout-Growth Bond program. The more you refer, the more you earn.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+            <div class="bg-nnl-green/50 p-4 rounded-lg">
+                <p class="text-2xl font-bold text-nnl-gold">₹2,000</p>
+                <p class="mt-1 text-sm">Total on ₹10k Plan</p>
             </div>
-            <div class="bg-nnl-green/50 p-6 rounded-lg">
-                <p class="text-3xl font-bold text-nnl-gold">₹200 <span class="text-lg text-white">x 5 Months</span></p>
-                <p class="mt-2">Recurring commission for 5 months.</p>
+            <div class="bg-nnl-green/50 p-4 rounded-lg">
+                <p class="text-2xl font-bold text-nnl-gold">₹5,000</p>
+                <p class="mt-1 text-sm">Total on ₹25k Plan</p>
+            </div>
+            <div class="bg-nnl-green/50 p-4 rounded-lg">
+                <p class="text-2xl font-bold text-nnl-gold">₹10,000</p>
+                <p class="mt-1 text-sm">Total on ₹50k Plan</p>
+            </div>
+            <div class="bg-nnl-green/50 p-4 rounded-lg">
+                <p class="text-2xl font-bold text-nnl-gold">₹20,000</p>
+                <p class="mt-1 text-sm">Total on ₹1L Plan</p>
             </div>
         </div>
     </div>
