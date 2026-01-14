@@ -2,7 +2,7 @@
 namespace Opencart\Catalog\Controller\Startup;
 
 class NnlReferral extends \Opencart\System\Engine\Controller {
-    private const NNL_DB_VERSION = '1.3';
+    private const NNL_DB_VERSION = '1.4';
 
     public function index(): void {
         $this->runDatabaseUpdates();
@@ -33,6 +33,9 @@ class NnlReferral extends \Opencart\System\Engine\Controller {
                 if (version_compare($current_version, '1.3', '<')) {
                     $this->updateToV1_3();
                 }
+                if (version_compare($current_version, '1.4', '<')) {
+                    $this->updateToV1_4();
+                }
 
                 $this->db->query("DELETE FROM `" . DB_PREFIX . "setting` WHERE `code` = 'config' AND `key` = 'nnl_db_version'");
                 $this->db->query("INSERT INTO `" . DB_PREFIX . "setting` SET `store_id` = 0, `code` = 'config', `key` = 'nnl_db_version', `value` = '" . $this->db->escape(self::NNL_DB_VERSION) . "', `serialized` = 0");
@@ -59,6 +62,12 @@ class NnlReferral extends \Opencart\System\Engine\Controller {
         $this->log->write('NNL: Applying database schema updates for v1.3...');
         $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "investment_plan` (`investment_plan_id` INT(11) NOT NULL AUTO_INCREMENT, `name` VARCHAR(255) NOT NULL, `price` DECIMAL(15, 2) NOT NULL, PRIMARY KEY (`investment_plan_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
         $this->log->write('NNL: Schema updates for v1.3 complete.');
+    }
+
+    private function updateToV1_4(): void {
+        $this->log->write('NNL: Applying database schema fix for v1.4...');
+        $this->db->query("DELETE FROM `" . DB_PREFIX . "setting` WHERE `code` = 'startup' AND `key` = 'startup_currency'");
+        $this->log->write('NNL: Schema fix for v1.4 complete.');
     }
 
     // ... (other existing helper functions) ...
