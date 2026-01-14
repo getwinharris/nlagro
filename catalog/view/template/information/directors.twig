@@ -1,0 +1,46 @@
+{{ header }}
+<div id="information-directors" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    <div id="content" class="col-sm">{{ content_top }}
+      <h1>Board of Directors</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-2">Mrs. Pushpa J</h2>
+          <p class="text-gray-600">Thoothukudi</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-2">Mrs. Shobana J</h2>
+          <p class="text-gray-600">Tirunelveli</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-2">Mr. Ebenezer A A</h2>
+          <p class="text-gray-600">Tirunelveli</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-2">Mrs. S. Jeyapushpam</h2>
+          <p class="text-gray-600">Nazareth/Tuticorin</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-2">Mr. D. Solomon</h2>
+          <p class="text-gray-600">Theni</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-2">Mr. J. P. Suryapraksh</h2>
+          <p class="text-gray-600">Madurai</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold mb-2">M Shankar</h2>
+          <p class="text-gray-600">Coimbatore</p>
+        </div>
+      </div>
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+{{ footer }}
