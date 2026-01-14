@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Share-Base Bond Certificate - NNL</title>
+  <style>
+    body {
+      font-family: 'Times New Roman', serif;
+      background: #F4F1DE;
+      padding: 40px;
+    }
+    .certificate {
+      background: white;
+      border: 8px solid #D4AF37;
+      padding: 60px;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .header {
+      text-align: center;
+      border-bottom: 3px solid #1B4332;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #1B4332;
+      font-size: 36px;
+      margin: 0;
+      font-weight: bold;
+    }
+    .header h2 {
+      color: #D4AF37;
+      font-size: 24px;
+      margin: 10px 0 0 0;
+    }
+    .content {
+      line-height: 1.8;
+      font-size: 16px;
+      color: #333;
+    }
+    .details {
+      background: #F4F1DE;
+      padding: 20px;
+      margin: 30px 0;
+      border-left: 4px solid #1B4332;
+    }
+    .details strong {
+      color: #1B4332;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #D4AF37;
+    }
+    .cert-number {
+      font-size: 14px;
+      color: #666;
+      text-align: right;
+      margin-top: 20px;
+    }
+    @media print {
+      body { padding: 0; }
+      .certificate { border: none; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate">
+    <div class="header">
+      <h1>SHARE-BASE BOND CERTIFICATE</h1>
+      <h2>Namathu Natural Leader (NNL)</h2>
+    </div>
+
+    <div class="content">
+      <p>This certifies that <strong>{{ investment.firstname }} {{ investment.lastname }}</strong> has invested in a Share-Base Bond for the following agricultural production:</p>
+
+      <div class="details">
+        <p><strong>Product:</strong> {{ investment.product_name }}</p>
+        <p><strong>Investment Amount:</strong> ₹{{ investment.amount|number_format(2) }}</p>
+        <p><strong>Profit Share:</strong> {{ investment.profit_share_percentage }}%</p>
+        <p><strong>Duration:</strong> {{ investment.duration }} days</p>
+        <p><strong>Issue Date:</strong> {{ date_issued }}</p>
+        <p><strong>Maturity Date:</strong> {{ maturity_date }}</p>
+        <p><strong>Certificate Number:</strong> {{ certificate_number }}</p>
+      </div>
+
+      <p>This bond represents a direct investment in sustainable farming practices and entitles the holder to a share of profits from global export margins upon maturity.</p>
+
+      <p style="margin-top: 30px;">This certificate is issued by Namathu Natural Leader and is valid for the duration specified above.</p>
+    </div>
+
+    <div class="footer">
+      <p><strong>Namathu Natural Leader (NNL)</strong></p>
+      <p>Direct from India's Farmers to Global Markets</p>
+      <p style="font-size: 12px; color: #666; margin-top: 20px;">
+        Certificate generated on {{ "now"|date("F d, Y") }}
+      </p>
+    </div>
+
+    <div class="cert-number">
+      Certificate #{{ certificate_number }}
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <button onclick="window.print()" style="background: #1B4332; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
+      Print Certificate
+    </button>
+  </div>
+</body>
+</html>
